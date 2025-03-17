@@ -20,6 +20,23 @@ OPENOCD_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 OPENOCD = openocd
 OPENOCD_OPTIONS = -f $(OPENOCD_DIR)/openocd.cfg
 
+# Add specific targets for each micro:bit
+.PHONY: flash-all
+flash-microbit1: all
+	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit1.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit2.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+
+.PHONY: flash-microbit1
+flash-microbit1: all
+	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit1.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+
+.PHONY: flash-microbit2
+flash-microbit2: all
+	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit2.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+
+.PHONY: flash-microbit3
+flash-microbit2: all
+	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit2.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
 
 .PHONY: flash
 flash: all
