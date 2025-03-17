@@ -10,9 +10,6 @@ APP_HEADER_PATHS += .
 APP_SOURCE_PATHS += .
 APP_SOURCES = $(notdir $(wildcard ./*.c))
 
-# Include platform header paths
-APP_HEADER_PATHS += ../include
-
 include ../boards/microbit_v2/Board.mk
 
 # Path to the nRF base directory (adjust as needed based on your structure)

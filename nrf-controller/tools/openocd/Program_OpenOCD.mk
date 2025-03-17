@@ -21,22 +21,25 @@ OPENOCD = openocd
 OPENOCD_OPTIONS = -f $(OPENOCD_DIR)/openocd.cfg
 
 # Add specific targets for each micro:bit
+MICROBIT_ALL := flash-1 flash-2 flash-3
+MICROBIT1 := -f $(OPENOCD_DIR)/microbit1.cfg
+MICROBIT2 := -f $(OPENOCD_DIR)/microbit2.cfg
+MICROBIT3 := -f $(OPENOCD_DIR)/microbit3.cfg
+
 .PHONY: flash-all
-flash-microbit1: all
-	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit1.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
-	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit2.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+flash-all: $(MICROBIT_ALL)
 
-.PHONY: flash-microbit1
-flash-microbit1: all
-	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit1.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+.PHONY: flash-1
+flash-1: all
+	$(Q) $(OPENOCD) $(MICROBIT1) -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
 
-.PHONY: flash-microbit2
-flash-microbit2: all
-	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit2.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+.PHONY: flash-2
+flash-2: all
+	$(Q) $(OPENOCD) $(MICROBIT2) -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
 
-.PHONY: flash-microbit3
-flash-microbit2: all
-	$(Q) $(OPENOCD) -f $(OPENOCD_DIR)/microbit2.cfg -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
+.PHONY: flash-3
+flash-3: all
+	$(Q) $(OPENOCD) $(MICROBIT3) -c "debug_level 0; program $(HEX); verify_image $(HEX); reset; shutdown;"
 
 .PHONY: flash
 flash: all

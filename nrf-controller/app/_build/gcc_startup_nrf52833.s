@@ -1,6 +1,6 @@
-# 1 "../../nrf52x-base/sdk/nrf5_sdk_16.0.0/modules/nrfx/mdk/gcc_startup_nrf52833.S"
-# 1 "<built-in>"
-# 1 "<command-line>"
+# 0 "../../nrf52x-base/sdk/nrf5_sdk_16.0.0/modules/nrfx/mdk/gcc_startup_nrf52833.S"
+# 0 "<built-in>"
+# 0 "<command-line>"
 # 1 "../../nrf52x-base/sdk/nrf5_sdk_16.0.0/modules/nrfx/mdk/gcc_startup_nrf52833.S"
 # 23 "../../nrf52x-base/sdk/nrf5_sdk_16.0.0/modules/nrfx/mdk/gcc_startup_nrf52833.S"
     .syntax unified
