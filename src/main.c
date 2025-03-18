@@ -38,7 +38,7 @@ int main () {
 		UpdateDrawFrame(&out1, &out2);
 
 		// read_microbit(&out1);
-		// printf("%d, %d\n", out1.A, out1.B);
+		printf("%u,%u,%f,%f,%f\n", out1.A, out1.B, out1.x, out1.y, out1.z);
 
 	}
 

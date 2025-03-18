@@ -21,23 +21,20 @@ void read_microbit(microbit_output_t* out) {
 	char buffer[BUFFER_SIZE];
 	ssize_t bytes_read = 0;
 
+	
 	while(!bytes_read) {
 		bytes_read = read(out->fd, buffer, BUFFER_SIZE - 1);
 	}
 
-	if(bytes_read < 3) {
+	if(bytes_read < BUFFER_SIZE - 1) {
 		out->A = -1;
 		out->B = -1;
+		out->x = -1;
+		out->y = -1;
+		out->z = -1;
 		return;
 	}
 
-	if(buffer[1] != ',') {
-		out->A = -1;
-		out->B = -1;
-		return;
-	}
-
-	buffer[1] = '\0';
-	sscanf(buffer, "%d", &out->A);
-	sscanf(buffer + 2, "%d", &out->B);
+	buffer[BUFFER_SIZE - 1] = '\0';
+	sscanf(buffer, "%u,%u,%f,%f,%f", &out->A, &out->B, &out->x, &out->y, &out->z);
 }

@@ -53,12 +53,12 @@ static Player player1, player2;
 static bool gameOver = false;
 static bool pauseGame = false;
 
-static int BALL_SPEED = 60;
+static int BALL_SPEED = 100;
 static int BALL_RADIUS = 15;
 
 static const int PLAYER_X_OFFSET = 30;
 static const int PLAYER_WIDTH = 15;
-static const int PLAYER_HEIGHT = 40;
+static const int PLAYER_HEIGHT = 60;
 static const double dt = 0.1;
 
 static const double maxAngle = (75.0 / 360.0) * (2 * M_PI);
@@ -109,8 +109,8 @@ void UpdateGame(microbit_output_t* m1, microbit_output_t* m2){
                 ball.curDirection.x = cos(angle);
                 ball.curDirection.y = sin(angle);
 
-                printf("Ball stuff: %f %f %f\n", relativeOffset, (player1.rec.height/2 + ball.radius), angle);
-                printf("%f %f\n", ball.curDirection.x, ball.curDirection.y);
+                // printf("Ball stuff: %f %f %f\n", relativeOffset, (player1.rec.height/2 + ball.radius), angle);
+                // printf("%f %f\n", ball.curDirection.x, ball.curDirection.y);
                 // ensure no weird double collision stuff happens
 
                 // if ball's center within the y-coordinates of the rect, ensure it's
