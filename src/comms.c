@@ -1,18 +1,18 @@
 #include "comms.h"
 
-int configure_microbit() {
-	fd = open(MICROBIT_PORT, O_RDONLY | O_NOCTTY | O_NONBLOCK);
-    if (fd == -1) {
+int configure_microbit(microbit_output_t* out) {
+	out->fd = open(out->port, O_RDONLY | O_NOCTTY | O_NONBLOCK);
+    if (out->fd == -1) {
         perror("Error opening serial port");
         return -1;
     }
 
 	struct termios options;
-    tcgetattr(fd, &options);
+    tcgetattr(out->fd, &options);
     cfsetispeed(&options, BAUDRATE);  // Match the baud rate with pyserial
     cfsetospeed(&options, BAUDRATE);
     options.c_cflag |= (CLOCAL | CREAD);
-    tcsetattr(fd, TCSANOW, &options);
+    tcsetattr(out->fd, TCSANOW, &options);
 
 	return 0;
 }
@@ -22,7 +22,7 @@ void read_microbit(microbit_output_t* out) {
 	ssize_t bytes_read = 0;
 
 	while(!bytes_read) {
-		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
+		bytes_read = read(out->fd, buffer, BUFFER_SIZE - 1);
 	}
 
 	if(bytes_read < 3) {

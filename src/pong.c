@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "pong.h"
+#include "comms.h"
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) < (b) ? (b) : (a))
@@ -50,7 +51,7 @@ static Ball ball = { 0 };
 static Player player1, player2;
 
 static bool gameOver = false;
-static bool pause = false;
+static bool pauseGame = false;
 
 static int BALL_SPEED = 60;
 static int BALL_RADIUS = 15;
@@ -68,12 +69,13 @@ int player2Wins = 0;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 450;
 
-void UpdateGame(void){
+void UpdateGame(microbit_output_t* m1, microbit_output_t* m2){
     // event loop
     if(!gameOver){
-        if (IsKeyDown('P')) pause = !pause;
-
-        if(!pause){
+        if (IsKeyDown('P')) pauseGame = !pauseGame;
+        read_microbit(m1);
+        read_microbit(m2);
+        if(!pauseGame){
             ball.position = (Vector2){ball.position.x + ball.curDirection.x * BALL_SPEED * dt, ball.position.y + ball.curDirection.y * BALL_SPEED * dt};
             if(ball.position.y - ball.radius < 0){
                 ball.curDirection.y = -ball.curDirection.y;
@@ -83,19 +85,19 @@ void UpdateGame(void){
                 ball.curDirection.y = -ball.curDirection.y;
                 ball.position.y = SCREEN_HEIGHT - ball.radius;
             }
-            if(IsKeyDown('A')){
+            if(m1->A){
                 player1.rec.y += player1.speed * dt;
                 player1.rec.y = min(player1.rec.y, SCREEN_HEIGHT - player1.rec.height);
             }
-            if(IsKeyDown('S')){
+            if(m1->B){
                 player1.rec.y -= player1.speed * dt;
                 player1.rec.y = max(player1.rec.y, 0);
             }
-            if(IsKeyDown('K')){
+            if(m2->A){
                 player2.rec.y += player2.speed * dt;
                 player2.rec.y = min(player2.rec.y, SCREEN_HEIGHT - player2.rec.height);
             }
-            if(IsKeyDown('L')){
+            if(m2->B){
                 player2.rec.y -= player2.speed * dt;
                 player2.rec.y = max(player2.rec.y, 0);
             }
@@ -162,9 +164,9 @@ void DrawGame(void){
     EndDrawing();
 }
 
-void UpdateDrawFrame(void)
+void UpdateDrawFrame(microbit_output_t* m1, microbit_output_t* m2)
 {
-    UpdateGame();
+    UpdateGame(m1, m2);
     DrawGame();
 }
 

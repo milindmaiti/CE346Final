@@ -28,7 +28,8 @@ int main(void) {
         B = gpio_read(buttonB) == 0;
         R = rng_read();
 
-        printf("%u,%u,%u\n", A, B, R);
+        printf("%u,%u\n", A, B);
+        // printf("%u,%u,%u\n", A, B, R);
         nrf_delay_ms(10);
     }
 }
