@@ -23,7 +23,7 @@ static uint8_t i2c_reg_read(uint8_t i2c_addr, uint8_t reg_addr) {
   uint8_t rx_buf = 0;
   nrf_twi_mngr_transfer_t const read_transfer[] = {
       NRF_TWI_MNGR_WRITE(i2c_addr, &reg_addr, 1, NRF_TWI_MNGR_NO_STOP),
-      NRF_TWI_MNGR_READ(i2c_addr, &rx_buf, 1, NULL)
+      NRF_TWI_MNGR_READ(i2c_addr, &rx_buf, 1, 0)
   };
   ret_code_t result = nrf_twi_mngr_perform(i2c_manager, NULL, read_transfer, 2, NULL);
   if (result != NRF_SUCCESS) {
