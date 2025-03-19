@@ -66,14 +66,16 @@ static const double maxAngle = (75.0 / 360.0) * (2 * M_PI);
 int player1Wins = 0;
 int player2Wins = 0;
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 450;
+int SCREEN_WIDTH;
+int SCREEN_HEIGHT;
 
 void UpdateGame(microbit_output_t* m1, microbit_output_t* m2){
     // event loop
     if(!gameOver){
         if (IsKeyDown('P')) pauseGame = !pauseGame;
+        if(m1 != NULL)
         read_microbit(m1);
+        if(m2 != NULL)
         read_microbit(m2);
         if(!pauseGame){
             ball.position = (Vector2){ball.position.x + ball.curDirection.x * BALL_SPEED * dt, ball.position.y + ball.curDirection.y * BALL_SPEED * dt};
@@ -85,19 +87,19 @@ void UpdateGame(microbit_output_t* m1, microbit_output_t* m2){
                 ball.curDirection.y = -ball.curDirection.y;
                 ball.position.y = SCREEN_HEIGHT - ball.radius;
             }
-            if(m1->A){
+            if(m1 != NULL && m1->A){
                 player1.rec.y += player1.speed * dt;
                 player1.rec.y = min(player1.rec.y, SCREEN_HEIGHT - player1.rec.height);
             }
-            if(m1->B){
+            if(m1 != NULL && m1->B){
                 player1.rec.y -= player1.speed * dt;
                 player1.rec.y = max(player1.rec.y, 0);
             }
-            if(m2->A){
+            if(m2 != NULL && m2->A){
                 player2.rec.y += player2.speed * dt;
                 player2.rec.y = min(player2.rec.y, SCREEN_HEIGHT - player2.rec.height);
             }
-            if(m2->B){
+            if(m2 != NULL && m2->B){
                 player2.rec.y -= player2.speed * dt;
                 player2.rec.y = max(player2.rec.y, 0);
             }
@@ -145,11 +147,11 @@ void UpdateGame(microbit_output_t* m1, microbit_output_t* m2){
 
             if(ball.position.x < 0){
                 player2Wins++;
-                InitGame();
+                InitGamePong(SCREEN_WIDTH, SCREEN_HEIGHT);
             }
             else if(ball.position.x >= SCREEN_WIDTH){
                 player1Wins++;
-                InitGame();
+                InitGamePong(SCREEN_WIDTH, SCREEN_HEIGHT);
             }
         }
     }
@@ -164,13 +166,15 @@ void DrawGame(void){
     EndDrawing();
 }
 
-void UpdateDrawFrame(microbit_output_t* m1, microbit_output_t* m2)
+void UpdateDrawFramePong(microbit_output_t* m1, microbit_output_t* m2)
 {
     UpdateGame(m1, m2);
     DrawGame();
 }
 
-void InitGame(void){
+void InitGamePong(int screen_width, int screen_height){
+    SCREEN_WIDTH = screen_width;
+    SCREEN_HEIGHT = screen_height;
     ball.color = BLUE;
     ball.radius = BALL_RADIUS;
     ball.position = (Vector2){SCREEN_WIDTH/2, SCREEN_HEIGHT/2};
@@ -191,6 +195,6 @@ void InitGame(void){
     player2.speed = 100.0;
 }
 
-void UnloadGame(void){
+void UnloadGamePong(void){
 
 }

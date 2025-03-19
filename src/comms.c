@@ -27,11 +27,11 @@ void read_microbit(microbit_output_t* out) {
 	}
 
 	if(bytes_read < BUFFER_SIZE - 1) {
-		out->A = -1;
-		out->B = -1;
-		out->x = -1;
-		out->y = -1;
-		out->z = -1;
+		// out->A = -1;
+		// out->B = -1;
+		// out->x = -1;
+		// out->y = -1;
+		// out->z = -1;
 		return;
 	}
 
