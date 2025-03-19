@@ -6,6 +6,7 @@
 #include "comms.h"
 #include "pong.h"
 #include "bowmaster.h"
+#include "snake.h"
 
 int main () {
 	microbit_output_t out1;
@@ -32,7 +33,9 @@ int main () {
 	// Create the window and OpenGL context
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello Raylib");
 	SetTargetFPS(60);
-	InitGameBM(SCREEN_WIDTH, SCREEN_HEIGHT);
+	InitGamePong(SCREEN_WIDTH, SCREEN_HEIGHT);
+	// InitGameBM(SCREEN_WIDTH, SCREEN_HEIGHT);
+	// InitGameSnake(SCREEN_HEIGHT, SCREEN_HEIGHT);
 	
 
 	// game loop
@@ -40,13 +43,15 @@ int main () {
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
 		// drawing
-		// UpdateDrawFrame(&out1, &out2);
+		UpdateDrawFramePong(&out1, &out2);
 		// UpdateDrawFramePong(NULL, &out2);
 		// UpdateDrawFrameBM(NULL, &out2);
-		UpdateDrawFrameBM(&out1, &out2);
+		// UpdateDrawFrameBM(&out1, &out2);
+		// UpdateDrawFrameSnake(&out1, &out2);
 
-		// read_microbit(&out1);
-		// printf("%u,%u,%f,%f,%f\n", out2.A, out2.B, out2.x, out2.y, out2.z);
+		read_microbit(&out1);
+		read_microbit(&out2);
+		printf("%u,%u,%f,%f,%f\n", out1.A, out1.B, out1.x, out1.y, out1.z);
 
 	}
 
