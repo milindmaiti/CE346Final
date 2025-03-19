@@ -3,12 +3,14 @@
 #include <stdio.h>
 
 #include "nrf.h"
-#include "nrf_delay.h"
-#include "gpio.h"
-#include "rng.h"
-#include "microbit_v2.h"
 #include "nrf_twi_mngr.h"
+#include "gpio.h"
+#include "microbit_v2.h"
+
 #include "accl.h"
+#include "light.h"
+#include "rng.h"
+
 
 NRF_TWI_MNGR_DEF(twi_mngr_instance, 1, 0);
 
@@ -31,17 +33,18 @@ int main(void) {
     rng_init(true);
 
     int A, B;
-    uint8_t R;
+    uint8_t light, random;
+    lsm303agr_measurement_t tilt;
 
     rng_start();
     while (1) {
         A = gpio_read(buttonA) == 0;
         B = gpio_read(buttonB) == 0;
-        lsm303agr_measurement_t tilt = lsm303agr_read_tilt();
-        R = rng_read();
+        tilt = lsm303agr_read_tilt();
+        light = light_read_bool(); // takes about ~12 microseconds
+        random = rng_read();
 
-        printf("%u,%u,%06.2f,%06.2f,%06.2f\n", A, B, tilt.x_axis, tilt.y_axis, tilt.z_axis);
-        // printf("%u,%u,%u\n", A, B, R);
-        nrf_delay_ms(10);
+        printf("%u,%u,%06.2f,%06.2f,%06.2f,%u,%u\n", A, B, tilt.x_axis, tilt.y_axis, tilt.z_axis, light, random);
+        // removed delay since reading light sensor causes a delay
     }
 }
