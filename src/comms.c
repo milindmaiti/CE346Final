@@ -21,6 +21,7 @@ void read_microbit(microbit_output_t* out) {
 	char buffer[BUFFER_SIZE];
 	ssize_t bytes_read = 0;
 
+	microbit_output_t cp = *out;
 	
 	while(!bytes_read) {
 		bytes_read = read(out->fd, buffer, BUFFER_SIZE - 1);
@@ -36,5 +37,10 @@ void read_microbit(microbit_output_t* out) {
 	}
 
 	buffer[BUFFER_SIZE - 1] = '\0';
-	sscanf(buffer, "%u,%u,%f,%f,%f", &out->A, &out->B, &out->x, &out->y, &out->z);
+	sscanf(buffer, "%u,%u,%f,%f,%f,%u,%u", &out->A, &out->B, &out->x, &out->y, &out->z, &out->L, &out->R);
+	if(out->A != 0 && out->A != 1)
+	out->A = cp.A;
+
+	if(out->B != 0 && out->B != 1)
+	out->B = cp.B;
 }

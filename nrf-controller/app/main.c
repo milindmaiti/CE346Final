@@ -44,7 +44,7 @@ int main(void) {
         light = light_read_bool(); // takes about ~12 microseconds
         random = rng_read();
 
-        printf("%u,%u,%06.2f,%06.2f,%06.2f,%u,%u\n", A, B, tilt.x_axis, tilt.y_axis, tilt.z_axis, light, random);
+        printf("%u,%u,%06.2f,%06.2f,%06.2f,%u,%03u\n", A, B, tilt.x_axis, tilt.y_axis, tilt.z_axis, light, random);
         // removed delay since reading light sensor causes a delay
     }
 }
