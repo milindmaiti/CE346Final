@@ -63,7 +63,7 @@ void UpdateMenu() {
 		printf("FADING IN\n");
 		fade = min(fade + 0.02, 1.);
 	}
-	else if(IsKeyPressed(KEY_ENTER)) {
+	else if(IsKeyPressed(KEY_ENTER) || m1.L || m2.L) {
 		game_started = true;
 	}
 }

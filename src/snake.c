@@ -61,6 +61,8 @@ static int lastB1 = 0;
 static int lastA2 = 0;
 static int lastB2 = 0;
 
+static int lWins = 0;
+static int rWins = 0;
 //------------------------------------------------------------------------------------
 // Module Functions Declaration (local)
 //------------------------------------------------------------------------------------
@@ -218,6 +220,10 @@ void UpdateGame(microbit_output_t *m1, microbit_output_t *m2)
                     ((snake[0][sn].position.y) > (screenHeight - offset.y)) ||
                     (snake[0][sn].position.x < 0) || (snake[0][sn].position.y < 0))
                 {
+                    if(sn == 0)
+                    rWins++;
+                    else
+                    lWins++;
                     gameOver = true;
                 }
             }
@@ -227,16 +233,30 @@ void UpdateGame(microbit_output_t *m1, microbit_output_t *m2)
             for(int sn = 0; sn < 2; sn++){
                 for (int i = 1; i < counterTail[sn]; i++)
                 {
-                    if ((snake[0][sn].position.x == snake[i][sn].position.x) && (snake[0][sn].position.y == snake[i][sn].position.y))
+                    if ((snake[0][sn].position.x == snake[i][sn].position.x) && (snake[0][sn].position.y == snake[i][sn].position.y)){
+                        if(sn == 0)
+                        rWins++;
+                        else
+                        lWins++;
                         gameOver = true;
+                    }
+                        
                 }
             }
 
             // collision with another snake
             for(int sn = 0; sn < 2; sn++){
                 for(int i = 0; i < counterTail[1-sn]; i++){
-                    if((snake[0][sn].position.x == snake[i][1-sn].position.x) && (snake[0][sn].position.y == snake[i][1-sn].position.y))
-                    gameOver = true;
+                    if((snake[0][sn].position.x == snake[i][1-sn].position.x) && (snake[0][sn].position.y == snake[i][1-sn].position.y)){
+                        if(i != 0){
+                            if(sn == 0)
+                            rWins++;
+                            else
+                            lWins++;
+                        }
+                        gameOver = true;
+                    }
+                    
                 }
             }
             
@@ -303,7 +323,9 @@ void DrawGame(void)
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
-
+    char buffer[100];
+    sprintf(buffer, "Player 1: %d, Player 2: %d", lWins, rWins);
+    DrawText(buffer, 5, 5, 25, BLACK);
     if (!gameOver)
     {
         // Draw grid lines

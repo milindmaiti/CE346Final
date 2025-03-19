@@ -128,5 +128,5 @@ uint8_t light_read() {
 }
 
 bool light_read_bool() {
-    return light_read() > 60;
+    return light_read() > 85;
 }

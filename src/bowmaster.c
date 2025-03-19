@@ -82,6 +82,9 @@ static bool ballOnAir = false;
 static int playerTicks = 0;
 static int maxPower = 300;
 
+int Bplayer1Wins = 0;
+int Bplayer2Wins = 0;
+
 // Initialize game variables
 void InitGameBM(int screen_width, int screen_height)
 {
@@ -146,7 +149,8 @@ void UpdateGame(microbit_output_t* m1, microbit_output_t* m2)
                     else
                     {
                         gameOver = true;
-
+                        if(leftTeamAlive) Bplayer1Wins++;
+                        else Bplayer2Wins++;
                         // if (leftTeamAlive) left team wins
                         // if (rightTeamAlive) right team wins
                     }
@@ -170,7 +174,9 @@ void DrawGame(void)
     BeginDrawing();
 
         ClearBackground(RAYWHITE);
-
+        char buffer[100];
+        sprintf(buffer, "Player 1: %d, Player 2: %d", Bplayer1Wins, Bplayer2Wins);
+        DrawText(buffer, 5, 5, 25, BLACK);
         if (!gameOver)
         {
             // Draw buildings

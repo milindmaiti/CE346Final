@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "pong.h"
 #include "comms.h"
+#include <string.h>
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) < (b) ? (b) : (a))
@@ -160,6 +161,9 @@ void UpdateGame(microbit_output_t* m1, microbit_output_t* m2){
 void DrawGame(void){
     BeginDrawing();
     ClearBackground(RAYWHITE);
+    char buffer[100];
+    sprintf(buffer, "Player 1: %d, Player 2: %d", player1Wins, player2Wins);
+    DrawText(buffer, 5, 5, 25, BLACK);
     DrawCircle(ball.position.x, ball.position.y, ball.radius, ball.color);
     DrawRectangle(player1.rec.x, player1.rec.y, player1.rec.width, player1.rec.height, player1.color);
     DrawRectangle(player2.rec.x, player2.rec.y, player2.rec.width, player2.rec.height, player2.color);
