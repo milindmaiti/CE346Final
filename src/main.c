@@ -6,7 +6,6 @@
 #include "comms.h"
 #include "pong.h"
 #include "bowmaster.h"
-#include "snake.h"
 
 #define NUM_GAMES 2
 #define SCREEN_WIDTH 800
@@ -122,22 +121,15 @@ int main () {
 	// Create the window and OpenGL context
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "TinyGamesOS");
 	SetTargetFPS(60);
-	InitGameBM(SCREEN_WIDTH, SCREEN_HEIGHT);
 	
-
 	// game loop
 	char str[20];
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
-		// drawing
-		// UpdateDrawFrame(&out1, &out2);
-		// UpdateDrawFramePong(NULL, &out2);
-		// UpdateDrawFrameBM(NULL, &out2);
-		UpdateDrawFrameBM(&out1, &out2);
-
-		// read_microbit(&out1);
-		// printf("%u,%u,%f,%f,%f\n", out2.A, out2.B, out2.x, out2.y, out2.z);
-
+		// UpdateMenu();
+		// UpdateDrawFrameMenu();
+		read_microbit(&m1);
+		printf("%u, %u\n", m1.A, m1.B);
 	}
 
 	close(m1.fd);
