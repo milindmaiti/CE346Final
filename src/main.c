@@ -6,6 +6,7 @@
 #include "comms.h"
 #include "pong.h"
 #include "bowmaster.h"
+#include "snake.h"
 
 #define NUM_GAMES 2
 #define SCREEN_WIDTH 800
@@ -33,36 +34,43 @@ static float EPS = 1e-9;
 microbit_output_t m1, m2;
 
 void UpdateMenu() {
+	read_microbit(&m1);
+	read_microbit(&m2);
+	print_microbit(&m1);
+	print_microbit(&m2);
 	if(!prev && !next) {
-		if(m1.A) {
+		if(IsKeyDown('P') || m1.A == 1 || m2.A == 1) {
+			printf("PREV\n");
 			prev = true;
 		}
-		else if(m1.B) {
+		else if(IsKeyDown('N') || m1.B == 1 || m2.B == 1) {
+			printf("NEXT\n");
 			next = true;
 		}
 	}
 
 	if(prev || next) { // must be fading out
-		fade = max(fade - 0.01, 0);
-		printf("FADING\n");
+		fade = max(fade - 0.02, 0);
+		printf("FADING OUT\n");
 
 		if(abs(fade) < EPS) {
 			current_game = prev ? (current_game - 1 + NUM_GAMES) % NUM_GAMES : (current_game + 1) % NUM_GAMES;
 			prev = next = false;
 		}
 	}
-	else if(abs(fade - 1) < EPS) { // must be fading in
-		fade = min(fade + 0.01, 1.);
+	else if(abs(fade - 1) >= EPS) { // must be fading in
+		printf("FADING IN\n");
+		fade = min(fade + 0.02, 1.);
 	}
 }
 
 void UpdateDrawFrameMenu(void) {
-	BeginDrawing();
-    ClearBackground(RAYWHITE);
-	game_t* cur = games + current_game;
-	DrawTexture(LoadTextureFromImage(cur->img), cur->img_x, cur->img_y, Fade(WHITE, max(0, fade)));
-	DrawText(cur->name, cur->name_x, cur->name_y, 30, Fade(BLACK, max(0, fade)));
-	EndDrawing();
+	// BeginDrawing();
+    // ClearBackground(RAYWHITE);
+	// game_t* cur = games + current_game;
+	// DrawTexture(LoadTextureFromImage(cur->img), cur->img_x, cur->img_y, Fade(WHITE, max(0, fade)));
+	// DrawText(cur->name, cur->name_x, cur->name_y, 30, Fade(BLACK, max(0, fade)));
+	// EndDrawing();
 }
 
 void resize_img(Image* img) {
@@ -72,18 +80,18 @@ void resize_img(Image* img) {
 int init() {
 	// Initialize microbits
 	m1.A = 0; m1.B = 0; m1.x = 0; m1.y = 0; m1.z = 0;
-	// m2.A = 0; m2.B = 0; m2.x = 0; m2.y = 0; m2.z = 0;
+	m2.A = 0; m2.B = 0; m2.x = 0; m2.y = 0; m2.z = 0;
 	strcpy(m1.port, "/dev/tty.usbmodem1102");
-	// strcpy(m2.port, "/dev/tty.usbmodem1302");
+	strcpy(m2.port, "/dev/tty.usbmodem1302");
 
 	if(configure_microbit(&m1) == -1) {
 		printf("Couldn't configure microbit1\n");
 		return -1;
 	}
-	// if(configure_microbit(&m2) == -1){
-	// 	printf("Couldn't configure microbit2\n");
-	// 	return -1;
-	// }
+	if(configure_microbit(&m2) == -1){
+		printf("Couldn't configure microbit2\n");
+		return -1;
+	}
 
 
 	// Initialize game information
@@ -99,12 +107,12 @@ int init() {
 
 	Image bm_img = LoadImage("bowmaster.png");
 	resize_img(&bm_img);
-	games[0].name = "Bow Master";
-	games[0].name_x = 370;
-	games[0].name_y = 25;
-	games[0].img = bm_img;
-	games[0].img_x = 115;
-	games[0].img_y = 80;
+	games[1].name = "Bow Master";
+	games[1].name_x = 330;
+	games[1].name_y = 25;
+	games[1].img = bm_img;
+	games[1].img_x = 130;
+	games[1].img_y = 80;
 
 	return 0;
 }
@@ -124,12 +132,12 @@ int main () {
 	
 	// game loop
 	char str[20];
+	InitGamePong(SCREEN_WIDTH, SCREEN_HEIGHT);
+	InitGameBM(SCREEN_WIDTH, SCREEN_HEIGHT);
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
-		// UpdateMenu();
-		// UpdateDrawFrameMenu();
-		read_microbit(&m1);
-		printf("%u, %u\n", m1.A, m1.B);
+		UpdateMenu();
+		UpdateDrawFrameMenu();
 	}
 
 	close(m1.fd);
