@@ -229,6 +229,14 @@ void UpdateGame(microbit_output_t *m1, microbit_output_t *m2)
                         gameOver = true;
                 }
             }
+
+            // collision with another snake
+            for(int sn = 0; sn < 2; sn++){
+                for(int i = 0; i < counterTail[1-sn]; i++){
+                    if((snake[0][sn].position.x == snake[i][1-sn].position.x) && (snake[0][sn].position.y == snake[i][1-sn].position.y))
+                    gameOver = true;
+                }
+            }
             
 
             // Fruit position calculation
