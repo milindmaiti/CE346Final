@@ -35,9 +35,9 @@ microbit_output_t m1, m2;
 
 void UpdateMenu() {
 	read_microbit(&m1);
-	read_microbit(&m2);
+	// read_microbit(&m2);
 	print_microbit(&m1);
-	print_microbit(&m2);
+	// print_microbit(&m2);
 	if(!prev && !next) {
 		if(IsKeyDown('P') || m1.A == 1 || m2.A == 1) {
 			printf("PREV\n");
@@ -134,10 +134,15 @@ int main () {
 	char str[20];
 	InitGamePong(SCREEN_WIDTH, SCREEN_HEIGHT);
 	InitGameBM(SCREEN_WIDTH, SCREEN_HEIGHT);
+	InitGameSnake(SCREEN_WIDTH, SCREEN_HEIGHT);
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
-		UpdateMenu();
-		UpdateDrawFrameMenu();
+		UpdateDrawFrameSnake(&m1, &m2);
+
+		read_microbit(&m1);
+		print_microbit(&m1);
+		// UpdateMenu();
+		// UpdateDrawFrameMenu();
 	}
 
 	close(m1.fd);

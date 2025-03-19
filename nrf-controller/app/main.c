@@ -53,6 +53,6 @@ int main(void) {
 
         printf("%u,%u,%u,%06.2f,%06.2f,%06.2f,%u,%03u\n", A, B, C, tilt.x_axis, tilt.y_axis, tilt.z_axis, light, random);
         // removed delay since reading light sensor causes a delay
-        nrf_delay_ms(100);
+        // nrf_delay_ms(10);
     }
 }

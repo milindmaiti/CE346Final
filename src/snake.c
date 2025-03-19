@@ -175,13 +175,15 @@ void handleInput(Snake* s, microbit_output_t* m, int lastA, int lastB){
 // Update game (one frame)
 void UpdateGame(microbit_output_t *m1, microbit_output_t *m2)
 {
+    
     if (!gameOver)
     {
+        if(m1 != NULL) read_microbit(m1);
+        if(m2 != NULL) read_microbit(m2);
         if (IsKeyPressed('P'))
             pauseGame = !pauseGame;
-        if(m1) read_microbit(m1);
-        if(m2) read_microbit(m2);
-
+        
+        
         if (!pauseGame)
         {
             // Player control
@@ -341,6 +343,8 @@ void UnloadGameSnake(void)
 // Update and Draw (one frame)
 void UpdateDrawFrameSnake(microbit_output_t *m1, microbit_output_t *m2)
 {
+    if(m1 != NULL) read_microbit(m1);
+    if(m2 != NULL) read_microbit(m2);
     UpdateGame(m1, m2);
     DrawGame();
 }

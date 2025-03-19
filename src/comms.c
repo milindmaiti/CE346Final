@@ -37,7 +37,7 @@ void read_microbit(microbit_output_t* out) {
 	}
 
 	buffer[BUFFER_SIZE - 1] = '\0';
-	sscanf(buffer, "%u,%u,%u,%06.2f,%06.2f,%06.2f,%u,%03u", &out->A, &out->B, &out->C, &out->x, &out->y, &out->z, &out->L, &out->R);
+	sscanf(buffer, "%u,%u,%u,%f,%f,%f,%u,%u", &out->A, &out->B, &out->C, &out->x, &out->y, &out->z, &out->L, &out->R);
 }
 
 void print_microbit(microbit_output_t* out) {
