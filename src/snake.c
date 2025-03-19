@@ -195,7 +195,7 @@ void UpdateGame(microbit_output_t *m1, microbit_output_t *m2)
                 for (int i = 0; i < counterTail[sn]; i++)
                     snakePosition[i][sn] = snake[i][sn].position;
 
-            if ((framesCounter % 5) == 0)
+            if ((framesCounter % 8) == 0)
             {
                 for(int sn = 0; sn < 2; sn++){
                     for (int i = 0; i < counterTail[sn]; i++)

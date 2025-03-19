@@ -35,8 +35,8 @@ static bool game_started = false;
 microbit_output_t m1, m2;
 
 void UpdateMenu() {
-	// read_microbit(&m1);
-	// read_microbit(&m2);
+	read_microbit(&m1);
+	read_microbit(&m2);
 	// print_microbit(&m1);
 	// print_microbit(&m2);
 	if(!prev && !next) {
@@ -83,19 +83,19 @@ void resize_img(Image* img) {
 
 int init() {
 	// Initialize microbits
-	// m1.A = 0; m1.B = 0; m1.x = 0; m1.y = 0; m1.z = 0;
-	// m2.A = 0; m2.B = 0; m2.x = 0; m2.y = 0; m2.z = 0;
-	// strcpy(m1.port, "/dev/tty.usbmodem1102");
-	// strcpy(m2.port, "/dev/tty.usbmodem1302");
+	m1.A = 0; m1.B = 0; m1.x = 0; m1.y = 0; m1.z = 0;
+	m2.A = 0; m2.B = 0; m2.x = 0; m2.y = 0; m2.z = 0;
+	strcpy(m1.port, "/dev/tty.usbmodem1102");
+	strcpy(m2.port, "/dev/tty.usbmodem1302");
 
-	// if(configure_microbit(&m1) == -1) {
-	// 	printf("Couldn't configure microbit1\n");
-	// 	return -1;
-	// }
-	// if(configure_microbit(&m2) == -1){
-	// 	printf("Couldn't configure microbit2\n");
-	// 	return -1;
-	// }
+	if(configure_microbit(&m1) == -1) {
+		printf("Couldn't configure microbit1\n");
+		return -1;
+	}
+	if(configure_microbit(&m2) == -1){
+		printf("Couldn't configure microbit2\n");
+		return -1;
+	}
 
 
 	// Initialize game information
@@ -145,10 +145,12 @@ int main () {
 	
 	// game loop
 	char str[20];
-	// InitGamePong(SCREEN_WIDTH, SCREEN_HEIGHT);
-	// InitGameBM(SCREEN_WIDTH, SCREEN_HEIGHT);
+	InitGamePong(SCREEN_WIDTH, SCREEN_HEIGHT);
+	InitGameBM(SCREEN_WIDTH, SCREEN_HEIGHT);
+	InitGameSnake(SCREEN_WIDTH, SCREEN_HEIGHT);
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{	
+		printf("%d, %d\n", game_started, current_game);
 		if(game_started) {
 			if(current_game == 0) {
 				UpdateDrawFramePong(&m1, &m2);
@@ -158,6 +160,10 @@ int main () {
 			}
 			else if(current_game == 2) {
 				UpdateDrawFrameSnake(&m1, &m2);
+			}
+
+			if(IsKeyPressed('Q')) {
+				game_started = false;
 			}
 		}
 		else {
